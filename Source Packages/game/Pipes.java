@@ -16,7 +16,7 @@ public class Pipes implements Updateable, Renderable {
 
   // Pipe closest to Bird
   private int currentPipe;
-  // Array to store Pipe coordinates
+  // Array to store Pipe Coordinates
   private float[][] pipeCoords = new float[3][2];
 
   private Random randObj;

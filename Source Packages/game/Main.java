@@ -5,10 +5,11 @@ public class Main {
     Game g = new Game();
 
     // Initialize Game Objects
-
+    Pipes p = new Pipes();
 
     // Add Updateables and Renderables
-
+    g.addRenderable(p);
+    g.addUpdateable(p);
 
     // Start Game
     g.start();
