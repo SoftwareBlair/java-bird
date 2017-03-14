@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 public class Game {
 
-  public final static int WIDTH = 800, HEIGHT = 600;
+  public final static int WIDTH = 1260, HEIGHT = 800;
 
   private String gameName = "Java Bird";
 
