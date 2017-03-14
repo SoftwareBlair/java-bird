@@ -61,10 +61,39 @@ public class Game {
     final int TIME_PER_TICK = 1000 / TICKS_PER_SECOND;
     final int MAX_FRAME_SKIPS = 5;
 
+    long nextGameTick = System.currentTimeMillis();
+    int loops;
+    float interpolation;
+
+    long timeAtLastFPSCheck = 0;
+    int ticks = 0;
+
     boolean running = true;
 
     while(running) {
+      // Updating
+      loops = 0;
 
+      while(System.currentTimeMillis() > nextGameTick && loops < MAX_FRAME_SKIPS) {
+        update();
+        ticks++;
+
+        nextGameTick += TIME_PER_TICK;
+        loops++;
+      }
+
+      // Rendering
+      interpolation = (float) (System.currentTimeMillis() + TIME_PER_TICK - nextGameTick)
+                    / (float) TIME_PER_TICK;
+      render(interpolation);
+
+      // FPS Check
+      if (System.currentTimeMillis() - timeAtLastFPSCheck >= 1000) {
+        System.out.println("FPS: " + ticks);
+        gameWindow.setTitle(gameName + " - FPS: " + ticks);
+        ticks = 0;
+        timeAtLastFPSCheck = System.currentTimeMillis();
+      }
     }
     // Game End
   }
@@ -87,7 +116,7 @@ public class Game {
     g.clearRect(0, 0, game.getWidth(), game.getHeight());
 
     for (Renderable r : renderables ) {
-      r.render(g, interpolation)
+      r.render(g, interpolation);
     }
     g.dispose();
     b.show();
