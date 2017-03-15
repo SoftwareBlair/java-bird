@@ -2,6 +2,6 @@ package game;
 
 public interface Updateable {
 
-  public void update(Input input);
+    public void update(Input input);
 
 }
