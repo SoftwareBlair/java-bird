@@ -1,19 +1,20 @@
 package game;
 
-import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class Bird implements Updateable, Renderable {
+public class Bird implements Updatable, Renderable {
 
     private float x, y;
-    private float yVelocity;
+    private float yVel;
     private float baseYVel = -6.0f;
     private float gravity = 0.25f;
 
     private Pipes pipes;
-    private int scoredPipes = 0;
+    private int scoredPipe = 0;
 
     private int score = 0;
 
@@ -30,9 +31,7 @@ public class Bird implements Updateable, Renderable {
         try {
             flapUp = Sprite.getSprite("bird_up.png");
             flapDown = Sprite.getSprite("bird_down.png");
-
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             System.err.println(ex.getMessage());
             System.exit(1);
         }
@@ -41,31 +40,52 @@ public class Bird implements Updateable, Renderable {
     public void resetBird() {
         x = 100;
         y = 100;
-        yVelocity = baseYVel;
+        yVel = baseYVel;
     }
 
     private void flap() {
-    yVelocity = baseYVel;
-  }
-
-    @Override
-    public void update(Input input) {
-        y += yVelocity;
-        yVelocity += gravity;
-
-        if (y < 0) {
-            y = 0;
-            yVelocity = 0;
-        }
-
-        if (input.isSpacePressed()) {
-            flap();
-        }
-
-        
+        yVel = baseYVel;
     }
 
     @Override
-    public void render(Graphics2D g, float interpolation) {}
+    public void update(Input input) {
+        y += yVel;
+        yVel += gravity;
+
+        if(y < 0) {
+            y = 0;
+            yVel = 0;
+        }
+
+        if(input.isSpacePressed()) {
+            flap();
+        }
+
+        float[] pipeCoords = pipes.getCurrentPipe();
+        float pipeX = pipeCoords[0];
+        float pipeY = pipeCoords[1];
+
+        if((x >= pipeX && x <= pipeX + pipes.getPipeWidth() && (y <= pipeY || y >= pipeY + pipes.getPipeVerticalSpacing())) || y >= Game.HEIGHT ) {
+            pipes.resetPipes();
+            resetBird();
+            score = 0;
+        }
+        else {
+            int currentPipeID = pipes.getCurrentPipeID();
+            score = (scoredPipe != currentPipeID) ? score + 1 : score;
+            scoredPipe = currentPipeID;
+        }
+    }
+
+    @Override
+    public void render(Graphics2D g, float interpolation) {
+        g.setColor(Color.red);
+        // g.fillOval((int) x, (int) (y + (yVel * interpolation)), 25, 25);
+
+        g.drawImage(yVel <= 0 ? flapUp : flapDown, (int) x, (int) (y + (yVel * interpolation)), null);
+
+        g.setFont(gameFont);
+        g.drawString("Score: " + score, 20, 50);
+    }
 
 }

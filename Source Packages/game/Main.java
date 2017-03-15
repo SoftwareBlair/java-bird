@@ -4,14 +4,15 @@ public class Main {
     public static void main(String[] args) {
         Game g = new Game();
 
-        // Initialize Game Objects
         Pipes p = new Pipes();
+        Bird b = new Bird(p);
 
-        // Add Updateables and Renderables
         g.addRenderable(p);
-        g.addUpdateable(p);
+        g.addUpdatable(p);
 
-        // Start Game
+        g.addRenderable(b);
+        g.addUpdatable(b);
+
         g.start();
     }
 }
