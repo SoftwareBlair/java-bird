@@ -12,16 +12,12 @@ public class Game {
     private Canvas game = new Canvas();
     public final static int WIDTH = 800, HEIGHT = 600;
 
-    private String gameName;
+    private String gameName = "Java Bird";
 
     private Input input;
 
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private ArrayList<Renderable> renderables = new ArrayList<>();
-
-    public Game() {
-        gameName = "Java Bird";
-    }
 
     public void addUpdatable(Updatable u) {
         updatables.add(u);

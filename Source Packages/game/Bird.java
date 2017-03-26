@@ -1,10 +1,13 @@
 package game;
 
+import game.Sprite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class Bird implements Updatable, Renderable {
 
@@ -80,7 +83,7 @@ public class Bird implements Updatable, Renderable {
     @Override
     public void render(Graphics2D g, float interpolation) {
         g.setColor(Color.red);
-        // g.fillOval((int) x, (int) (y + (yVel * interpolation)), 25, 25);
+        g.fillOval((int) x, (int) (y + (yVel * interpolation)), 25, 25);
 
         g.drawImage(yVel <= 0 ? flapUp : flapDown, (int) x, (int) (y + (yVel * interpolation)), null);
 
